@@ -49,6 +49,11 @@ mon_kerninfo(int argc, char **argv, struct Trapframe *tf)
 	cprintf("  etext  %08x (virt)  %08x (phys)\n", etext, etext - KERNBASE);
 	cprintf("  edata  %08x (virt)  %08x (phys)\n", edata, edata - KERNBASE);
 	cprintf("  end    %08x (virt)  %08x (phys)\n", end, end - KERNBASE);
+	cprintf("  _start                  %016o (phys)\n", _start);
+	cprintf("  entry  %016o (virt)  %016o (phys)\n", entry, entry - KERNBASE);
+	cprintf("  etext  %016o (virt)  %016o (phys)\n", etext, etext - KERNBASE);
+	cprintf("  edata  %016o (virt)  %016o (phys)\n", edata, edata - KERNBASE);
+	cprintf("  end    %016o (virt)  %016o (phys)\n", end, end - KERNBASE);
 	cprintf("Kernel executable memory footprint: %dKB\n",
 		ROUNDUP(end - entry, 1024) / 1024);
 	return 0;
