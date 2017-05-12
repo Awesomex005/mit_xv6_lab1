@@ -139,6 +139,8 @@ debuginfo_eip(uintptr_t addr, struct Eipdebuginfo *info)
 	// Search the entire set of stabs for the source file (type N_SO).
 	lfile = 0;
 	rfile = (stab_end - stabs) - 1;
+	/*(stab_end - stabs) == ((uint32)stab_end - (uint32)stabs) / sizeof(struct Stab) */
+	// cprintf("stabs: %08x stab_end: %08x (stab_end - stabs) = %d ((stab_end - stabs) - 1) = %d\n", (uint32_t)stabs, (uint32_t)stab_end, (stab_end - stabs), rfile);
 	stab_binsearch(stabs, &lfile, &rfile, N_SO, addr);
 	if (lfile == 0)
 		return -1;
@@ -179,7 +181,17 @@ debuginfo_eip(uintptr_t addr, struct Eipdebuginfo *info)
 	//	Look at the STABS documentation and <inc/stab.h> to find
 	//	which one.
 	// Your code here.
-
+	stab_binsearch(stabs, &lline, &rline, N_SLINE, addr);
+	if(lline <= rline)
+	{
+		info->eip_fn_addr = addr;
+		info->eip_line = stabs[lline].n_desc;
+	}
+	else
+	{
+		info->eip_fn_addr = 0;
+		return -1;
+	}
 
 	// Search backwards from the line number for the relevant filename
 	// stab.
