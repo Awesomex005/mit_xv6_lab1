@@ -182,6 +182,10 @@ debuginfo_eip(uintptr_t addr, struct Eipdebuginfo *info)
 	//	which one.
 	// Your code here.
 	stab_binsearch(stabs, &lline, &rline, N_SLINE, addr);
+	if(info->eip_fn_namelen == 9 && ! strncmp(info->eip_fn_name, "<unknown>", 9))
+	{
+		addr = 0;	
+	}
 	if(lline <= rline)
 	{
 		info->eip_fn_addr = addr;
